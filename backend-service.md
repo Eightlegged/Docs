@@ -1,8 +1,8 @@
-# User Service
+# Back-End Services
 
-Smart Meeting Assistant 어플리케이션의 Spring Boot 기반 Basic Back-End 서비스 1(User Service)
-
-
+Smart Meeting Assistant 어플리케이션의 Spring Boot 기반 Basic Back-End 서비스 
+* User Service
+* Meeting Service
 
 ### 사용 프레임워크(런타임 및 버전 상세 필요)
 * Spring-Boot 1.5.7
@@ -15,9 +15,9 @@ Spring Boot 기반의 프로젝트를 jar 파일로 패키징하여 PaaS상에 �
 해당 jar 파일이 있는 곳에서 
 java -jar 파일명.jar
 
-이후 http://localhost:3000 에서 테스트
 
 ### 기능 (추 후 추가 예정)
-> 회원가입
-
-> 로그인
+> User Service
+>> Sign UP
+>> Log In
+> Meeting Service
