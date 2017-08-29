@@ -15,6 +15,11 @@ Spring Boot 기반의 프로젝트를 jar 파일로 패키징하여 PaaS상에 �
 해당 jar 파일이 있는 곳에서 
 java -jar 파일명.jar
 
+### 데이터베이스
+url=jdbc:mysql://localhost:3306/base_info
+username=root
+password=1234
+
 ### 기능 (추 후 추가 가능)
 > 회원서비스
 >> 회원가입\
@@ -63,7 +68,7 @@ password|User Password|String
 ### Response
 Case|Return
 ---|---
-성공|{"result": "SUCCESS"}
+성공|{"result": "SUCCESS", "USER_ID": "10", "USER_NAME": "패기", "USER_PART": "Communication"}
 
   
 ## Add Meeting
@@ -81,12 +86,17 @@ content|Meeting Content|String
 date|Meeting Date|date(YYYY-MM-DD)
 startTime|Start Time|Time(HH:MM)
 status|Meeting Status|Status(WAIT or COMPLETE)
-partName|Part Name|Partname(Architecture, Engineering, RnD or QA)
+partName|Part Name|Partname(Communication, Distribution, Manufactoring or VDI)
 userList|User List|ArrayList<User>
+checkList|Check List|ArrayList<CheckList>
+
+class CheckList{
+String item
+boolean checked
+}
 
 ex)  
-{"title":"weekly1", "comment":"weekly","content":"test123","date":"20170831","startTime":"10:00",    
-"status":"WAIT","partName":"Architecture","userList": [{"userName": "Saeyoung"},{"userName": "Faeyoung"}]}  
+{"title":"weekly1", "comment":"weekly","content":"test123","date":"2017-08-31","startTime":"10:00","partName":"Communication","userList": [{"userName": "패기"}],"checkList": [{"item":"check","checked":"true"},{"item":"check2","checked":"false"}]}
 
 ### Response
 Case|Return
@@ -121,16 +131,14 @@ ex)
                 "email": "heehouse1@gmail.com",
                 "userName": "Saeyoung",
                 "password": "test123",
-                "role": "USER",
-                "name": "Saeyoung"
+                "role": "USER"
             },
             {
                 "id": 2,
                 "email": "heehouse2@gmail.com",
                 "userName": "Faeyoung",
                 "password": "test123",
-                "role": "USER",
-                "name": "Faeyoung"
+                "role": "USER"
             }
         ],
         "status": "WAIT",
@@ -150,12 +158,62 @@ Case|Return
 ---|---
 성공|ArrayList<Meeting>
 
-  
+
+## Get User's Meeting List(Meeting Status:WAIT)
+### URI
+HTTP|URI
+---|---
+POST|/user/wait/{id}
+
+### Parameter(PathVariable)
+Parameter|Parameter명|Data Type
+---|---|---
+id|User id|Long
+
+### Response
+Case|Return
+---|---
+성공|ArrayList<Meeting>
+
+
+## Get User's Meeting List(Meeting Status:COMPLETE)
+### URI
+HTTP|URI
+---|---
+POST|/user/end/{id}
+
+### Parameter(PathVariable)
+Parameter|Parameter명|Data Type
+---|---|---
+id|User id|Long
+
+### Response
+Case|Return
+---|---
+성공|ArrayList<Meeting>
+
+## Get Meeting Info
+### URI
+HTTP|URI
+---|---
+POST|/meeting/info/{id}
+
+### Parameter(PathVariable)
+Parameter|Parameter명|Data Type
+---|---|---
+id|Meeting id|Long
+
+### Response
+Case|Return
+---|---
+성공|Meeting
+
+
 ## Start Meeting
 ### URI
 HTTP|URI
 ---|---
-POST/meeting/start/{id}
+POST|/meeting/start/{id}
 
 ### Parameter(PathVariable)
 Parameter|Parameter명|Data Type
@@ -179,6 +237,14 @@ Parameter|Parameter명|Data Type
 ---|---|---
 id|Meeting id|Long
 
+### Parameter(Request Body)
+Parameter|Parameter명|Data Type
+---|---|---
+checkList|Check List|ArrayList<CheckList>
+
+ex)
+{"checkList": [{"id":"7","item":"check33","checked":"true"},{"id":"8","item":"check244","checked":"true"}]}
+
 ### Response
 Case|Return
 ---|---
@@ -189,7 +255,7 @@ Case|Return
 ### URI
 HTTP|URI
 ---|---
-POST/meeting/delete/{id}
+POST|/meeting/delete/{id}
 
 ### Parameter(PathVariable)
 Parameter|Parameter명|Data Type
